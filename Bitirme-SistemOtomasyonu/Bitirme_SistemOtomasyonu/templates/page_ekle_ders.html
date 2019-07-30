@@ -1,0 +1,137 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+
+
+<button class="btn btn-lg btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><span class="glyphicon glyphicon-plus"></span> Ders Ekle</button>
+
+<input id="myInput" type="text" class="form-control" placeholder="Search.." style="margin-top:5px">
+
+<div class="alert alert-success" role="alert">
+    Dersler burada listelenecek..
+</div>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ders</th>
+            <th scope="col">Dersin Hocası</th>
+            <th scope="col">Kayıtlı Ögrenci</th>
+            <!--<th scope="col"></th>-->
+        </tr>
+    </thead>
+    <tbody id="myTable1">
+
+        {% if dersListesi is defined and dersListesi.val() != None %}
+
+        {% for ders in dersListesi.each(): %}
+
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+
+            <td>{{ders.val().dersinAdi}}</td>
+            <td>{{ders.val().dersinOgretmeni}}</td>
+            <td>{{ders.val().dersiAlanOgrenciListesi|length}}</td>
+
+
+            <!--
+            <td>
+                <button type="button" class="btn btn-success"><a href="">Güncelle</a></button>
+
+                <button type="button" class="btn btn-danger"><a href="">Sil</a></button>
+            </td>
+                -->
+        </tr>
+
+        {%endfor%}
+        {% else %}
+<td>Liste Boş</td>
+    {% endif %}
+
+
+
+    </tbody>
+</table>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Yeni Ders</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Dersin Adı </label>
+                    <input name="frm_dersinAdi" type="text" class="form-control" placeholder="ders">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Dersin Ögretmeni</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="frm_dersinOgretmeni">
+
+                        {% if ogretmenListesi.val() != None %}
+                        {% for o in ogretmenListesi.each(): %}
+                        <option value="{{o.val().uuid}}">
+                            {{o.val().email}}
+                        </option>
+                        {% endfor %}
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <h1>Dersi Alan Ögrencileri Seçiniz</h1>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">İsim</th>
+                            <th scope="col">Soyisim</th>
+                            <th scope="col">Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable1">
+
+                        {% if ogrenciListesi is defined and ogrenciListesi.val() != None %}
+
+                        {% for user in ogrenciListesi.each(): %}
+
+                        <tr>
+                            <th scope="row">
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{ user.val().uuid }}" name="frm_check" id="t{{ loop.index }}">
+                                    <label class="form-check-label" for="t{{ loop.index }}">
+                                        {{ loop.index }}
+                            </th>
+                            </label>
+        </div>
+
+        <td>{{user.val().isim}}</td>
+        <td>{{user.val().soyIsim}}</td>
+        <td>{{user.val().email}}</td>
+        </tr>
+
+        {%endfor%}
+        {% else %}
+        <td>Liste Boş</td>
+        {% endif %}
+
+
+        </tbody>
+        </table>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Ekle</button>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,148 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+
+{% if result == True %}
+<div class="alert alert-success" role="alert">
+    Yoklama Talebiniz Alınmıştır.
+</div>
+{% elif result == False %}
+<div class="alert alert-danger" role="alert">
+    Yoklama Talebi Alınamadı.
+</div>
+{%endif%}
+
+
+<button class="btn btn-lg btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><span class="glyphicon glyphicon-plus"></span> Talep Ekle</button>
+
+
+<input id="myInput" type="text" class="form-control" placeholder="Search.." style="margin-top:5px">
+
+
+
+<!-- Image Modal -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <img src="" class="imagepreview" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 id="myh2talep">Talep Listesi</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Talep Eden</th>
+            <th scope="col">Dersin Adi</th>
+            <th scope="col">Tarih</th>
+            <th scope="col">Resim</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody id="myTable"></tbody>
+</table>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Yeni Talep</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Taleb Eden</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="frm_talepeden">
+
+                            {% if ogretmenListesi.val() != None %}
+                            {% for o in ogretmenListesi.each(): %}
+                            <option value="{{o.val().uuid}}">
+                                {{o.val().email}}
+                            </option>
+                            {% endfor %}
+                            {% endif %}
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Ders</label>
+                        <select class="form-control" id="exampleFormControlSelect2" name="frm_ders">
+
+                            {% if dersListesi.val() != None %}
+                            {% for o in dersListesi.each(): %}
+                            <option value="{{o.val().uuid}}">
+                                {{o.val().dersinAdi}}
+                            </option>
+                            {% endfor %}
+                            {% endif %}
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Tarih </label>
+                        <input name="frm_tarih" type="text" class="form-control" value="30.05.2019">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Yoklaması Alınacak Resim</label>
+                        <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Ögrenci Numarası</th>
+                                <th scope="col">Ögrenci</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bulunanOgrencilertbl">
+
+
+                        </tbody>
+                    </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,140 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+{% if result == True %}
+<div class="alert alert-success" role="alert">
+    Ögrenci Hesabı Başarılı Bir Şekilde Oluştruldu.
+</div>
+{% elif result == False %}
+<div class="alert alert-danger" role="alert">
+    Ögrenci Hesabı Oluşturulamadı.
+</div>
+{%endif%}
+
+<button class="btn btn-lg btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><span class="glyphicon glyphicon-plus"></span> Ögrenci Ekle</button>
+
+<input id="myInput" type="text" class="form-control" placeholder="Search.." style="margin-top:5px">
+
+<h2>Ögrenci Listesi</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Resim</th>
+            <th scope="col">Numara</th>
+            <th scope="col">İsim</th>
+            <th scope="col">Soyisim</th>
+            <th scope="col">Email</th>
+            <!-- <th scope="col"></th>-->
+            </tr>
+        </thead>
+        <tbody id="myTable1">
+
+            {% if ogrenciListesi is defined and ogrenciListesi.val() != None %}
+
+            {% for user in ogrenciListesi.each(): %}
+
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>
+                    <a href="#" class="pop">
+                        <img class="pop" data-toggle="modal" width="50" height="50" src="../static/ogrenciResimleri/{{user.val().uuid}}.png" class="rounded mx-auto d-block" alt="...">
+                    </a>
+                </td>
+                <td>{{user.val().numara}}</td>
+                <td>{{user.val().isim}}</td>
+                <td>{{user.val().soyIsim}}</td>
+                <td>{{user.val().email}}</td>
+                <!--
+                <td>
+                    <button type="button" class="btn btn-success"><a href="/update/ogrenci/<int:uuid>">Güncelle</a></button>
+
+                    <button type="button" class="btn btn-danger"><a href="/delete/ogrenci/{{user.val().uuid}}">Sil</a></button>
+                </td>
+                    -->
+            </tr>
+
+            {%endfor%}
+            {% else %}
+        <td>Liste Boş</td>
+        {% endif %}
+
+        </tbody>
+    </table>
+
+    <!-- Image Modal -->
+                <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <img src="" class="imagepreview" style="width: 100%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Yeni Ögrenci</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="POST" enctype="multipart/form-data">
+                                <div class="modal-body">
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Numara </label>
+                                        <input name="frm_numara" type="text" class="form-control" placeholder="numara">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">İsim </label>
+                                        <input name="frm_isim" type="text" class="form-control" placeholder="isim">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Soyisim </label>
+                                        <input name="frm_soyisim" type="text" class="form-control" placeholder="soyisim">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email </label>
+                                        <input name="frm_email" type="email" class="form-control" placeholder="email">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Şifre </label>
+                                        <input name="frm_sifre" type="password" class="form-control" id="exampleInputPassword1" placeholder="Şifre">
+                                    </div>
+
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline1" name="frm_cinsiyet" value="Erkek" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline1">Erkek</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="customRadioInline2" name="frm_cinsiyet" value="Kadın" class="custom-control-input">
+                                        <label class="custom-control-label" for="customRadioInline2">Kadın</label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleFormControlFile1">Example file input</label>
+                                        <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Ekle</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                {% endblock %}

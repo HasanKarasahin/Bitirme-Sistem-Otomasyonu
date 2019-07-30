@@ -1,0 +1,106 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+{% if result == True %}
+<div class="alert alert-success" role="alert">
+    Ögretmen Hesabı Başarılı Bir Şekilde Oluştruldu.
+</div>
+{% elif result == False %}
+<div class="alert alert-danger" role="alert">
+    Ögretmen Hesabı Oluşturulamadı.
+</div>
+{%endif%}
+
+<button class="btn btn-lg btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><span class="glyphicon glyphicon-plus"></span> Ögretmen Ekle</button>
+
+<input id="myInput" type="text" class="form-control" placeholder="Search.." style="margin-top:5px">
+
+<h2>Ögretmen Listesi</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">İsim</th>
+            <th scope="col">Soyisim</th>
+            <th scope="col">Email</th>
+            <!--<th scope="col"></th>-->
+        </tr>
+    </thead>
+    <tbody id="myTable1">
+
+        {% if ogretmenlerListesi is defined and ogretmenlerListesi.val() != None %}
+        {% for user in ogretmenlerListesi.each(): %}
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{user.val().isim}}</td>
+            <td>{{user.val().soyIsim}}</td>
+            <td>{{user.val().email}}</td>
+            <!--
+            <td>
+                
+               
+                
+                <button type="button" class="btn btn-success"><a href="/update/<string:kullanici>/<int:uuid>">Güncelle</a></button>
+
+                <button type="button" class="btn btn-danger"><a href="/delete/ogretmen/{{user.val().uuid}}">Sil</a></button>
+            </td>
+                -->
+        </tr>
+        {%endfor%}
+        {% else %}
+    <td>Liste Boş</td>
+    {% endif %}
+
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Yeni Ogretmen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">İsim </label>
+                        <input name="frm_isim" type="text" class="form-control" placeholder="isim">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Soyisim </label>
+                        <input name="frm_soyisim" type="text" class="form-control" placeholder="soyisim">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email </label>
+                        <input name="frm_email" type="email" class="form-control" placeholder="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Şifre </label>
+                        <input name="frm_sifre" type="password" class="form-control" id="exampleInputPassword1" placeholder="Şifre">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
